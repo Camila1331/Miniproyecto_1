@@ -1,0 +1,93 @@
+% start O
+############################
+# Grammar Rules
+#############################
+
+# La oración es sintagma nominal (T) seguido de sintagma verbal (VI)
+O[SEM=<app(?t,?vi)>] -> T[SEM=?t] VI[SEM=?vi] 
+
+# El sintagma nominal puede ser un determinante (D) seguido de un sustantivo (NC)
+T[SEM=<app(?d,?nc)>] -> D[SEM=?d] NC[SEM=?nc]
+
+# El sintagma nominal (T) puede ser un sustantivo (NC)
+T[SEM=?nc] -> NC[SEM=?nc]
+
+# El sintagma verbal puede ser una negación (NEG) seguida de un sintagma verbal (VI)
+VI[SEM=<app(?neg,?vi)>] -> NEG[SEM=?neg] VI[SEM=?vi]
+
+# El sintagma verbal puede ser un verbo transitivo seguido de un sintagma nominal
+VI[SEM=<app(?vt,?t)>] -> VT[SEM=?vt] 'a' T[SEM=?t]
+VI[SEM=<app(?vt,?t)>] -> VT[SEM=?vt] T[SEM=?t]
+
+
+VI[SEM=<app(?vt,?t)>] -> T[SEM=?t] VT[SEM=?vt]
+
+# Preposiciones
+# Un sintagma verbal (VI) puede ser un sintagma verbal (VI) seguido de un sintagma preposicional (SP)
+VI[SEM=<app(?vi,?pp)>] -> VI[SEM=?vi] SP[SEM=?pp]
+
+
+
+
+# Un sintagma preposicional (SP) puede ser una preposición (PREP) seguido de un sintagma nominal (t)
+
+#############################
+# Lexical Rules
+#############################
+
+# Términos
+#   SUJ: Sujeto
+#   OBJ_DIR: Objeto directo para verbos transitivos.
+
+# ----------------------------
+# Nombres propios
+# ----------------------------
+
+
+# ----------------------------
+# Sustantivos
+# ----------------------------
+
+NC[SEM=<\x.DRS([],[VIEJA(x)])>] -> 'vieja'
+NC[SEM=<\x.DRS([],[QUESO(x)])>] -> 'queso'
+NC[SEM=<\x.DRS([],[RATON(x)])>] -> 'ratón' 
+NC[SEM=<\x.DRS([],[PERRO(x)])>] -> 'perro'
+NC[SEM=<\x.DRS([],[GATO(x)])>] -> 'gato'
+NC[SEM=<\x.DRS([],[PALO(x)])>] -> 'palo'
+NC[SEM=<\x.DRS([],[FUEGO(x)])>] -> 'fuego'
+NC[SEM=<\x.DRS([],[AGUA(x)])>] -> 'agua'
+NC[SEM=<\x.DRS([],[BUEY(x)])>] -> 'buey'
+
+# ----------------------------
+# Determinantes
+# ----------------------------
+
+D[SEM=<\P Q.((DRS([x],[FEME(x)])+P(x))+Q(x))>] -> 'una' | 'Una' | 'al'
+D[SEM=<\P Q.((DRS([x],[MASC(x)])+P(x))+Q(x))>] -> 'un' | 'Un' | 'al' 
+D[SEM=<\P Q.(((DRS([x],[FEME(x)])+P(x))+(DRS([],[(([y], []) + P(y)) -> ([],[y=x])])))+Q(x))>] -> 'la' | 'La' 
+D[SEM=<\P Q.(((DRS([x],[MASC(x)])+P(x))+(DRS([],[(([y], []) + P(y)) -> ([],[y=x])])))+Q(x))>] -> 'el' | 'El' 
+
+# ----------------------------
+# Pronombres
+# ----------------------------
+
+NC[SEM=<\P.(DRS([],[MASC(x)])+P(x))>] -> 'él' | 'Él' | 'Éste' | 'lo'
+NC[SEM=<\P.(DRS([],[FEME(x)])+P(x))>] -> 'ella' | 'Ella' | 'la'
+
+# ----------------------------
+# Verbos intransitivos
+# ----------------------------
+
+
+
+# ----------------------------
+# Verbos transitivos
+# ----------------------------
+
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[TENER(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'tenía'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[MATAR(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'mató'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[PEGAR(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'le' 'pegó'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[QUEMAR(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'quemó'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[APAGAR(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'apagó'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[COMER(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'se' 'comió'
+VT[NUM=sg,SEM=<\X x.X(\y.DRS([e],[BEBER(e),SUJETO(e,x),OBJ_DIR(e,y)]))>] -> 'se' 'bebió'

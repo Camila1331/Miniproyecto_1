@@ -1,0 +1,75 @@
+% start P
+######################################
+# Reglas gramaticales para preguntas
+######################################
+
+# ---------------
+# Preguntas
+# ---------------
+
+# La pregunta es 'quién' seguido de sintagma verbal (V) 
+P[SEM=<\x.exists e.(?vi(e))(x)>] -> '¿' 'quién' V[SEM=?vi] '?'
+
+# La pregunta es 'qué' seguido de sintagma verbal (VI) 
+P[SEM=<\x.(exists e.(?t(?vi(\X.X(x))(e))))>] -> '¿' 'qué' VT[SEM=?vi] T[SEM=?t]'?'
+
+# ---------------
+# Términos
+# ---------------
+
+# Un término / sintagma nominal (T) puede ser un nombre propio
+T[SEM=?s] -> NP[SEM=?s]
+
+# Un término / sintagma nominal (T) puede ser un determinante (D) seguido de un sustantivo (NC)
+T[SEM=<?d(?nc)>] -> Det[SEM=?d] NC[SEM=?nc]
+
+# ---------------
+# Verbos
+# ---------------
+
+# El sintagma verbal (V) puede ser un verbo intransitivo (VI)
+V[SEM=?vi] -> VI[SEM=?vi]
+
+# El sintagma verbal (V) puede ser un verbo transitivo (VT) seguido de un sintagma nominal (T)
+V[SEM=<?vt(?t)>] -> VT[SEM=?vt] 'a' T[SEM=?t]
+V[SEM=<?vt(?t)>] -> VT[SEM=?vt] T[SEM=?t]
+
+
+#############################
+# Reglas léxicas
+#############################
+
+# ----------------------------
+# Nombres propios
+# ----------------------------
+
+
+
+# ----------------------------
+# Sustantivos
+# ----------------------------
+
+NC[SEM=<\x.VIEJA(x)>] -> 'vieja'
+NC[SEM=<\x.QUESO(x)>] -> 'queso'
+NC[SEM=<\x.PALO(x)>] -> 'palo'
+
+# ----------------------------
+# Determinantes
+# ----------------------------
+
+Det[SEM=<\Y.\X.exists x.(Y(x) & X(x))>] -> 'un' | 'una' | 'al'
+Det[SEM=<\Y.\X.exists x.(Y(x) & all y.(Y(y) -> x=y) & X(x))>] -> 'el' | 'la' 
+
+# ----------------------------
+# Verbos intransitivos
+# ----------------------------
+
+
+
+# ----------------------------
+# Verbos transitivos
+# ----------------------------
+
+VT[SEM=<\P.\e.\x.P(\y.(TENER(e) & SUJETO(e,x) & OBJ_DIR(e,y)))>] -> 'tenía'
+VT[SEM=<\P.\e.\x.P(\y.(QUEMAR(e) & SUJETO(e,x) & OBJ_DIR(e,y)))>] -> 'quemó'
+VT[SEM=<\P.\e.\x.P(\y.(COMER(e) & SUJETO(e,x) & OBJ_DIR(e,y)))>] -> 'se' 'comió'
